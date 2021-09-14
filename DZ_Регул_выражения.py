@@ -6,7 +6,7 @@ with open("phonebook_raw.csv", encoding='utf-8') as f:
   rows = csv.reader(f, delimiter=",")
   contacts_list = list(rows)
 
-# print(contacts_list)
+print(contacts_list)
 
 cont_list = []
 for list in contacts_list:
@@ -17,7 +17,7 @@ for list in contacts_list:
     new_list.append(res)
   cont_list.append(new_list)
 
-# print(cont_list)
+print(cont_list)
 
 cont_list_2 = []
 
@@ -38,33 +38,53 @@ for list in cont_list:
       new_list.append(a)
   cont_list_2.append(new_list)
 
-# print(cont_list_2)
+print(cont_list_2)
 
-new_contacts_list = []
+new_contacts_list = [cont_list_2[0]]
 
 for id, list in enumerate(cont_list_2):
-  if id == 0:
-    new_contacts_list.append(cont_list_2[0])
-  else:
+  if id != 0:
+    count = 1
     for id_2, ncl in enumerate(new_contacts_list):
-      count = 0
-      if list[0] == ncl[0] and list[1] == ncl[1]:
-        count += 1
-        for id_3, a in enumerate(list):
-          if a > ncl[id_3]:
-            new_contacts_list[id_2][id_3] = a
+      if list[0] == ncl[0]:
+        for id_3, elm in enumerate(list):
+          if elm > ncl[id_3]:
+            new_contacts_list[id_2][id_3] = elm
           else:
             continue
-      elif count == len(new_contacts_list) - 1:
-        new_contacts_list.append(cont_list_2[id])
-        break
-      else:
+      elif count != len(new_contacts_list):
         count += 1
+        continue
+      else:
+        new_contacts_list.append(list)
+        break
+  else:
+    continue
+
+
+# for id, list in enumerate(cont_list_2):
+#   if id != 0:
+#     for id_2, ncl in enumerate(new_contacts_list):
+#       count = 0
+#       if list[0] == ncl[0] and list[1] == ncl[1]:
+#         count += 1
+#         for id_3, a in enumerate(list):
+#           if a > ncl[id_3]:
+#             new_contacts_list[id_2][id_3] = a
+#           else:
+#             continue
+#       elif count == len(new_contacts_list) - 1:
+#         new_contacts_list.append(cont_list_2[id])
+#         break
+#       else:
+#         count += 1
+#     else:
+#       continue
 
 print(new_contacts_list)
 
 
 
-with open("phonebook.csv", "w") as f:
+with open("phonebook.csv", "w", encoding='UTF-8') as f:
   datawriter = csv.writer(f, delimiter=',')
   datawriter.writerows(new_contacts_list)
